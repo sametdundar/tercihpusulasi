@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "673479091015",
+    "firebase_url": "https://tercih-pusulasi-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "tercih-pusulasi",
+    "storage_bucket": "tercih-pusulasi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673479091015:android:37ca416495a96018ee2262",
+        "android_client_info": {
+          "package_name": "com.tercihpusulasi.tercihpusulasi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtVBdGKiGNziZRq4ariaiUTWsFWATcfdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
