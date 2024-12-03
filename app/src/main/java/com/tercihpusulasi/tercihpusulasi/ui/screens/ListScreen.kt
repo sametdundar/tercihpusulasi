@@ -1,5 +1,7 @@
 package com.tercihpusulasi.tercihpusulasi.ui.screens
 
+import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,28 +17,33 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.sametdundar.guaranteeapp.roomdatabase.FormData
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.sametdundar.guaranteeapp.roomdatabase.FormViewModel
-import com.tercihpusulasi.tercihpusulasi.navigation.ScreenRoutes
+import com.tercihpusulasi.tercihpusulasi.UniversityDetail
+import com.tercihpusulasi.tercihpusulasi.roomdatabase.University
 import com.tercihpusulasi.tercihpusulasi.ui.theme.DarkBlue
 import com.tercihpusulasi.tercihpusulasi.ui.theme.GreenColor
 import com.tercihpusulasi.tercihpusulasi.ui.theme.RedColor
-import com.tercihpusulasi.tercihpusulasi.utils.JsonConverter.toJson
 
 @Composable
 fun ListScreen(viewModel: FormViewModel = hiltViewModel(), navController: NavHostController) {
 
-    val allFormData by viewModel.allFormData.observeAsState(initial = emptyList())
+    val universityList = remember { mutableStateOf(listOf<University>()) }
+
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -49,7 +56,7 @@ fun ListScreen(viewModel: FormViewModel = hiltViewModel(), navController: NavHos
                 // Başlık
                 item {
                     Text(
-                        "GARANTİ BİLGİLERİNİ EKLEDİĞİNİZ ÜRÜNLERİN LİSTESİ",
+                        "ÜNİVERSİTELERİN LİSTESİ",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 32.dp, start = 20.dp, end = 20.dp),
@@ -65,26 +72,48 @@ fun ListScreen(viewModel: FormViewModel = hiltViewModel(), navController: NavHos
                     Spacer(modifier = Modifier.height(20.dp))
                 }
 
-                // Kullanıcı Listesi
-                items(allFormData.reversed()) { formData ->
-                    ListItem(formData = formData, navController,viewModel)
+
+                val universitiesRef = FirebaseDatabase.getInstance().getReference("universities")
+                universitiesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val list = mutableListOf<University>()
+                        for (data in snapshot.children) {
+                            val universityModel = data.getValue(University::class.java)
+                            universityModel?.let {
+                                list.add(it)
+                            }
+                        }
+                        universityList.value = list
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e("Firebase", "Veritabanı hatası: ${error.message}")
+                    }
+                })
+
+                items(universityList.value) { university ->
+                    ListItem(formData = university, navController, viewModel)
                 }
+
+
             }
         }
     }
 }
 
 @Composable
-fun ListItem(formData: FormData, navController: NavHostController, viewModel: FormViewModel) {
+fun ListItem(formData: University, navController: NavHostController, viewModel: FormViewModel) {
+
+    val context = LocalContext.current
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        colors = CardDefaults.cardColors(containerColor = if(formData.isChecked) GreenColor else RedColor),
+        colors = CardDefaults.cardColors(containerColor = if (true) GreenColor else RedColor),
         onClick = {
-
-            navController.navigate("${ScreenRoutes.FormDetail.route}?formData=${toJson(formData)}")
-
+            val intent = Intent(context, UniversityDetail::class.java)
+            context.startActivity(intent)
         }
     ) {
         Row(
@@ -100,13 +129,13 @@ fun ListItem(formData: FormData, navController: NavHostController, viewModel: Fo
                     fontSize = 20.sp
                 )
                 Text(
-                    text = "Kaç Yıl Garantisi ${if(formData.isChecked) "Var" else "Vardı"}: ${formData.noteTime}",
+                    text = "Kaç Yıl Garantisi ${if (true) "Var" else "Vardı"}:",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )
 
                 Text(
-                    text = "Garanti Devam Ediyor mu: ${if (formData.isChecked) "Devam Ediyor" else "Bitti"}",
+                    text = "Garanti Devam Ediyor mu: ${if (true) "Devam Ediyor" else "Bitti"}",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )

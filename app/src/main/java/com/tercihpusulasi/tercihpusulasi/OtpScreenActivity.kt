@@ -85,7 +85,8 @@ class OtpScreenActivity : ComponentActivity() {
                             student?.let {
                                 if (user?.phoneNumber == student.phoneNumber) {
                                     if (student.admin) {
-                                        val intent = Intent(this@OtpScreenActivity, AdminActivity::class.java)
+//                                        val intent = Intent(this@OtpScreenActivity, AdminActivity::class.java)
+                                        val intent = Intent(this@OtpScreenActivity, MainActivity::class.java)
                                         startActivity(intent)
                                         finish()
                                     }else {

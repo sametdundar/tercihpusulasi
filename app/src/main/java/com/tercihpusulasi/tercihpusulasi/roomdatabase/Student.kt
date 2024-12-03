@@ -15,17 +15,17 @@ data class Preference(
 )
 
 data class University(
-    val city: String,
-    val id: Int,
-    val name: String,
-    val programs: List<Program>
+    val city: String = "",
+    val id: Int = 0,
+    val name: String = "",
+    val programs: List<Program> = listOf()
 )
 
 data class Program(
     val id: Int = 0,
     val language: String = "",
-    val lastYearMinScore: Double = 0.0,
+    val last_year_min_score: Double = 0.0,
     val name: String = "",
-    val quota: Int = 50,
-    val scoreType: String = ""
+    val quota: Int = 0,
+    val score_type: String = ""
 )

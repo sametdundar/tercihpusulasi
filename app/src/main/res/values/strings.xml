@@ -3,4 +3,5 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_otp_screen">OtpScreenActivity</string>
     <string name="title_activity_admin">AdminActivity</string>
+    <string name="title_activity_university_detail">UniversityDetail</string>
 </resources>

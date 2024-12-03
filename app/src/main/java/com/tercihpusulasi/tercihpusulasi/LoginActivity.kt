@@ -76,7 +76,8 @@ class LoginActivity : ComponentActivity() {
                         student?.let {
                             if (user?.phoneNumber == student.phoneNumber) {
                                 if (student.admin) {
-                                    val intent = Intent(this@LoginActivity, AdminActivity::class.java)
+//                                    val intent = Intent(this@LoginActivity, AdminActivity::class.java)
+                                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
                                     startActivity(intent)
                                     finish()
                                 }else {

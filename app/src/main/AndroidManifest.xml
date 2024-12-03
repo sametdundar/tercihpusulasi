@@ -16,12 +16,15 @@
         android:theme="@style/Theme.TercihPusulası"
         tools:targetApi="31">
         <activity
+            android:name=".UniversityDetail"
+            android:exported="false"
+            android:label="@string/title_activity_university_detail"
+            android:theme="@style/Theme.TercihPusulası" />
+        <activity
             android:name=".AdminActivity"
             android:exported="false"
             android:label="@string/title_activity_admin"
-            android:theme="@style/Theme.TercihPusulası">
-
-        </activity>
+            android:theme="@style/Theme.TercihPusulası"></activity>
         <activity
             android:name=".OtpScreenActivity"
             android:exported="false"
