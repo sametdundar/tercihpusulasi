@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -36,8 +35,7 @@ import com.sametdundar.guaranteeapp.roomdatabase.FormViewModel
 import com.tercihpusulasi.tercihpusulasi.UniversityDetail
 import com.tercihpusulasi.tercihpusulasi.roomdatabase.University
 import com.tercihpusulasi.tercihpusulasi.ui.theme.DarkBlue
-import com.tercihpusulasi.tercihpusulasi.ui.theme.GreenColor
-import com.tercihpusulasi.tercihpusulasi.ui.theme.RedColor
+import com.tercihpusulasi.tercihpusulasi.ui.theme.Purple40
 
 @Composable
 fun ListScreen(viewModel: FormViewModel = hiltViewModel(), navController: NavHostController) {
@@ -92,7 +90,7 @@ fun ListScreen(viewModel: FormViewModel = hiltViewModel(), navController: NavHos
                 })
 
                 items(universityList.value) { university ->
-                    ListItem(formData = university, navController, viewModel)
+                    ListItem(university = university, navController, viewModel)
                 }
 
 
@@ -102,7 +100,7 @@ fun ListScreen(viewModel: FormViewModel = hiltViewModel(), navController: NavHos
 }
 
 @Composable
-fun ListItem(formData: University, navController: NavHostController, viewModel: FormViewModel) {
+fun ListItem(university: University, navController: NavHostController, viewModel: FormViewModel) {
 
     val context = LocalContext.current
 
@@ -110,9 +108,10 @@ fun ListItem(formData: University, navController: NavHostController, viewModel: 
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        colors = CardDefaults.cardColors(containerColor = if (true) GreenColor else RedColor),
+        colors = CardDefaults.cardColors(containerColor = Purple40),
         onClick = {
             val intent = Intent(context, UniversityDetail::class.java)
+            intent.putExtra("universityData",university)
             context.startActivity(intent)
         }
     ) {
@@ -123,21 +122,10 @@ fun ListItem(formData: University, navController: NavHostController, viewModel: 
         ) {
             Column {
                 Text(
-                    text = formData.name,
+                    text = university.name,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp
-                )
-                Text(
-                    text = "Kaç Yıl Garantisi ${if (true) "Var" else "Vardı"}:",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
-                )
-
-                Text(
-                    text = "Garanti Devam Ediyor mu: ${if (true) "Devam Ediyor" else "Bitti"}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
                 )
             }
         }

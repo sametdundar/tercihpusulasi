@@ -157,8 +157,6 @@ fun LoginScreen(
     isLoading: MutableState<Boolean>
 ) {
     var phoneNumber by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) }
 
 
 
